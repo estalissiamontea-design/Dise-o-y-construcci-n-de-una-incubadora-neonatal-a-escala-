@@ -96,7 +96,9 @@ $$u[k] = K_p e[k] + K_i \sum_{j=0}^{k} e[j]\Delta t + K_d \left(\frac{e[k] - e[k
 
 La salida $u[k]$ se limita al rango de 8 bits (0 a 255). Debido a que la etapa de potencia incorpora un transistor BJT 2N2222 que invierte la fase lógica antes de excitar la compuerta del MOSFET IRFZ44N, la señal de Modulación por Ancho de Pulso (PWM) se programa con **lógica invertida**:
 
-$$\text{PWM}_{\text{salida}} = 255 - \text{casteo\_int}(u[k])$$
+$$
+\text{PWM}_{\text{salida}} = 255 - \text{sat}(u[k], 0, 255)
+$$
 
 ---
 
