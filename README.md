@@ -146,7 +146,7 @@ Se utilizó un microcontrolador ESP32 como unidad principal para la adquisición
 
 ### Tabla I: Asignación de Pines y Periféricos en la ESP32
 
-| Módulo / Componente | Pin ESP32 | Modo / Protocolo | Función Técnica |
+| Componente | Pin ESP32 | Protocolo | Función Técnica |
 | :--- | :--- | :--- | :--- |
 | **Sensor NTC (10 kΩ)** | GPIO 34 | ADC1_CH6 (Entrada Analógica) | Captura del voltaje variable en el divisor resistivo |
 | **Driver de Potencia** | GPIO 25 | Salida Digital / PWM | Conmutación de la etapa de potencia del calefactor |
