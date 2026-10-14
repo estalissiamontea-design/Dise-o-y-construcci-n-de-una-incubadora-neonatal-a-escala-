@@ -1,4 +1,4 @@
-# DISEÑO, CONSTRUCCIÓN Y EVALUACIÓN EXPERIMENTAL DE UN PROTOTIPO DE INCUBADORA NEONATAL A ESCALA CON CONTROL TÉRMICO PID Y SUBSISTEMA DE PESAJE DIGITAL
+# Diseño y construcción de una incubadora neonatal a escala 
 
 Alissia Montealegre Quintero. 
 Raul Alexander Peñuela Jimenez.
