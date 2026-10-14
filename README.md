@@ -418,7 +418,7 @@ void loop() {
 ```
 ---
 
-# V. ESTIMACIÓN DE PRECIOS Y COMPARATIVA CON SISTEMAS SIMILARES
+# IV. ESTIMACIÓN DE PRECIOS Y COMPARATIVA CON SISTEMAS SIMILARES
 
 El análisis económico permite evaluar la viabilidad financiera del prototipo frente a soluciones comerciales de grado médico y a otros proyectos de investigación. Para este proyecto, la etapa de alimentación y la estructura física se construyeron utilizando componentes discretos de electrónica básica e insumos de maquetación de bajo costo, reduciendo al mínimo la inversión inicial.
 
@@ -464,7 +464,7 @@ Para poner en perspectiva el presupuesto final del prototipo ($270,400 COP), la 
 
 | Parámetro | Incubadora Comercial Gama Alta (ej. Dräger / YP2000) | Incubadora Clínica Estándar / Transporte (ej. YP920) | Prototipos de Investigación (Arduino / Raspberry Pi) | Prototipo Desarrollado (ESP32) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Rango de Precio (COP)** | $50,000,000 - $120,000,000 COP | $18,000,000 - $28,000,000 COP | $600,000 - $1,200,000 COP | **$270,400 COP** |
+| **Rango de Precio (COP)** | $50,000,000 - $120,000,000 COP | $18,000,000 - $28,000,000 COP | $600,000 - $1,200,000 COP | $270,400 COP |
 | **Sistema de Alimentación** | Fuentes conmutadas médicas redundantes e inmunizadas | Fuente conmutada regulada de grado médico | Adaptador o fuente conmutada comercial | Fuente artesanal (Transformador + Puente + LM78XX) |
 | **Control Térmico** | Calefactor cerámico/blindado (200W - 400W) con flujo controlado | Resistencia de alta potencia (100W - 200W) | Calefactor PTC o bombillo halógeno (50W - 100W) | Resistencia de alambre cerámico (20W) |
 | **Monitoreo de Peso** | Balanza integrada de precisión clínica ($\pm 1\text{ g}$) | Balanza de alta resolución externa opcional | Celda de carga 1 kg - 5 kg con HX711 | Celda de carga 5 kg con HX711 en base de madera |
@@ -472,7 +472,7 @@ Para poner en perspectiva el presupuesto final del prototipo ($270,400 COP), la 
 | **Grado de Homologación** | Certificación ISO 13485 / FDA / Registro Sanitario | Certificación IEC 60601 / Registro Sanitario | Sin certificación (Prototipo académico) | Sin certificación (Prototipo académico) |
 ---
 
-# IV. ANÁLISIS DE RESULTADOS
+# V. ANÁLISIS DE RESULTADOS
 
 El desarrollo práctico en el laboratorio permitió comprobar de manera directa cómo responden los componentes electrónicos elegidos frente a las condiciones reales de prueba, alejándose de los comportamientos teóricos o simulados. Al integrar el sistema sobre la tarjeta ESP32, el proceso de evaluación entregó resultados contrastantes entre lo que se pudo medir en físico y lo que quedó limitado desde la selección del hardware.
 
