@@ -230,9 +230,45 @@ La cabina del prototipo se construyó utilizando paneles de acrílico transparen
 
 ---
 
-## G. Firmware Integrado en C++ (ESP32)
+## G. Estructura, Análisis del Firmware e Implementación en C++ (ESP32)
 
-El programa completo cargado en la ESP32 para la ejecución simultánea del control térmico PID, lectura del NTC, filtrado del pesaje y despliegue en la pantalla LCD es el siguiente:
+El programa desarrollado para la tarjeta ESP32 se estructuró en C++ utilizando un modelo de ejecución secuencial en bucle (`loop`). Este firmware ejecuta de forma integrada cuatro tareas esenciales: la adquisición y conversión analógica de la temperatura, la evaluación del algoritmo de control PID discreto, la lectura de la masa corporal mediante la celda de carga y la actualización de la interfaz visual en la pantalla LCD [1, 2].
+
+---
+
+### 1. Desglose y Análisis del Firmware
+
+#### a. Inclusión de Librerías y Asignación de Pines
+El programa utiliza la librería `math.h` para el cálculo del logaritmo natural (`log()`) necesario en la conversión del termistor NTC mediante la ecuación de Steinhart-Hart [4]. Para la pantalla LCD se emplean `Wire.h` y `LiquidCrystal_I2C.h`, permitiendo la comunicación por bus I2C utilizando solo dos líneas de datos. Por su parte, la comunicación con el módulo de pesaje de 24 bits se realiza a través de la librería `DFRobot_HX711.h` [1, 2].
+
+La distribución fija de pines en la ESP32 queda configurada de la siguiente manera:
+* `NTC_PIN (GPIO 34)`: Canal analógico de entrada (ADC1_CH6).
+* `HEATER_PIN (GPIO 25)`: Salida de Modulación por Ancho de Pulso (PWM) hacia la etapa de potencia [1].
+* `HX711_DOUT (GPIO 19)` y `HX711_SCK (GPIO 18)`: Pines de datos serie y reloj para la celda de carga [1].
+
+#### b. Configuración e Inicialización (`setup`)
+En el bloque `setup()`, se inicializa el monitor serie a 115200 baudios para la depuración de datos. El pin `HEATER_PIN` se define como salida digital y se fuerza a un estado ALTO (`HIGH`). Esta acción es crítica por seguridad: dado que la etapa de potencia con el transistor BJT 2N2222 invierte la señal lógica, un nivel ALTO inicial garantiza que la compuerta del MOSFET IRFZ44N permanezca a tierra, evitando que la resistencia calefactora de $10\ \Omega / 20\text{W}$ se encienda de manera accidental durante el arranque del microcontrolador [1, 2]. Posteriormente, se inicializa el bus I2C en los pines GPIO 21 (SDA) y GPIO 22 (SCL) y se muestra la pantalla de bienvenida.
+
+#### c. Adquisición Analógica y Modelo Térmico
+Para mitigar el ruido electromagnético y la no linealidad del convertidor ADC de 12 bits de la ESP32, se toma un promedio móvil de 20 muestras consecutivas con un retardo de $2\text{ ms}$ entre lecturas [2]. El valor digital promediado ($N_{\text{ADC}}$) se convierte a resistencia instantánea del termistor ($R_{\text{NTC}}$) aplicando la fórmula del divisor de tensión:
+
+$$R_{\text{NTC}} = 10000 \cdot \left( \frac{N_{\text{ADC}}}{4095 - N_{\text{ADC}}} \right)$$
+
+Posteriormente, la resistencia se transforma a grados Celsius (`tempC`) mediante el modelo Beta de Steinhart-Hart, utilizando los parámetros $T_0 = 298.15\text{ K}$, $R_0 = 10000\ \Omega$ y $\beta = 3950\text{ K}$ [4].
+
+#### d. Algoritmo de Control PID Discreto e Inversión de Salida
+El control térmico calcula el error restando la temperatura actual del valor de consigna (`setpoint = 36.5` °C) [3]. El intervalo de tiempo $\Delta t$ transcurrido entre iteraciones se calcula dinámicamente con la función `millis()`.
+
+La componente integral acumula el error en el tiempo. Para evitar el fenómeno de *windup* (saturación de la integral por desviaciones prolongadas), se delimita su acumulación entre $-100$ y $100$. La componente derivativa evalúa la velocidad de cambio del error respecto a $\Delta t$. La suma de las tres acciones ($K_p = 15.0$, $K_i = 0.5$, $K_d = 2.0$) genera la variable `outputPID`, la cual se satura en el rango de $0$ a $255$. Debido a la inversión de fase que introduce el driver transistorizado, la potencia calculada se aplica de forma invertida mediante `255 - outputPID` [1].
+
+#### e. Lectura de Pesaje e Interfaz LCD
+La lectura bruta transmitida por el circuito integrado HX711 se escala multiplicándola por el factor de calibración ajustado en laboratorio (`factor_correccion = 5.405`) [1, 2]. Si el resultado es menor a cero debido a la deriva de tara, la variable se fuerza a cero gramos y luego se divide entre 1000 para obtener la masa en kilogramos (`peso_kg`).
+
+Finalmente, la pantalla LCD de 16x2 actualiza en la primera línea la temperatura medida y el punto de consigna, mientras que en la segunda línea despliega la masa corporal estimada y el porcentaje de trabajo del calefactor ($0\%$ a $100\%$) [2].
+
+---
+
+### 2. Código Fuente Completo en C++ (ESP32)
 
 ```cpp
 #include <Wire.h>
@@ -240,47 +276,57 @@ El programa completo cargado en la ESP32 para la ejecución simultánea del cont
 #include <DFRobot_HX711.h>
 #include <math.h>
 
-// Asignacion de pines
-#define NTC_PIN 34
-#define HEATER_PIN 25
-#define HX711_DOUT 19
-#define HX711_SCK 18
+// ============================================================================
+// ASIGNACIÓN DE PINES Y PERIFÉRICOS (ESP32)
+// ============================================================================
+#define NTC_PIN 34        // Entrada analógica ADC1_CH6 (Divisor de tensión NTC)
+#define HEATER_PIN 25     // Salida PWM hacia el driver de potencia transistorizado
+#define HX711_DOUT 19     // Línea de datos serie del convertidor HX711 (24 bits)
+#define HX711_SCK 18      // Línea de reloj de sincronización para el HX711
 
-// Instancias de perifericos
+// ============================================================================
+// INSTANCIAS DE OBJETOS Y PERIFÉRICOS
+// ============================================================================
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 DFRobot_HX711 MyScale(HX711_DOUT, HX711_SCK);
 
-// Parametros del termistor NTC
-const float Beta = 3950.0;
-const float R0 = 10000.0;
-const float Temp0 = 298.15;
+// ============================================================================
+// PARÁMETROS FÍSICOS Y CONSTANTES DEL MODELO TÉRMICO
+// ============================================================================
+const float Beta = 3950.0;     // Constante Beta del termistor NTC
+const float R0 = 10000.0;      // Resistencia nominal del NTC a 25 °C (10 kΩ)
+const float Temp0 = 298.15;    // Temperatura de referencia en Kelvin (25 °C + 273.15)
 
-// Parametros del control PID
-float setpoint = 36.5;
-float Kp = 15.0;
-float Ki = 0.5;
-float Kd = 2.0;
+// ============================================================================
+// PARÁMETROS Y VARIABLES DEL CONTROLADOR PID
+// ============================================================================
+float setpoint = 36.5;         // Consigna de temperatura en el Ambiente Térmico Neutro (°C)
+float Kp = 15.0;               // Ganancia Proporcional
+float Ki = 0.5;                // Ganancia Integral
+float Kd = 2.0;                // Ganancia Derivativa
 
-float integral = 0.0;
-float last_error = 0.0;
-unsigned long last_time = 0;
+float integral = 0.0;          // Acumulador de la componente integral
+float last_error = 0.0;        // Registro del error anterior para el cálculo derivativo
+unsigned long last_time = 0;   // Control del tiempo entre muestras (dt)
 
-// Factor de calibracion de la celda de carga
-float factor_correccion = 5.405;
+// ============================================================================
+// PARÁMETROS DE CALIBRACIÓN DE PESAJE
+// ============================================================================
+float factor_correccion = 5.405; // Escala ajustada experimentalmente para la celda de carga
 
 void setup() {
   Serial.begin(115200);
 
-  // Configuración de la salida PWM (Invertida por la etapa BJT)
+  // Configuración de la salida PWM (Seguridad: Nivel ALTO mantiene el calefactor APAGADO)
   pinMode(HEATER_PIN, OUTPUT);
   digitalWrite(HEATER_PIN, HIGH); 
 
-  // Inicializacion de pantalla LCD sobre I2C
+  // Inicialización del bus I2C y la pantalla LCD 16x2
   Wire.begin(21, 22);
   lcd.init();
   lcd.backlight();
 
-  // Pantalla de bienvenida
+  // Pantalla de arranque inicial del sistema
   lcd.setCursor(0, 0);
   lcd.print("   INCUBADORA   ");
   lcd.setCursor(0, 1);
@@ -290,21 +336,25 @@ void setup() {
 }
 
 void loop() {
-  // 1. Lectura y filtrado del termistor NTC (Promedio 20 muestras)
+  // --------------------------------------------------------------------------
+  // 1. ADQUISICIÓN Y FILTRADO ANALÓGICO DE TEMPERATURA (NTC 10k)
+  // --------------------------------------------------------------------------
   long sumaADC = 0;
   for (int i = 0; i < 20; i++) {
     sumaADC += analogRead(NTC_PIN);
     delay(2);
   }
   float rawADC = (float)sumaADC / 20.0;
-  if (rawADC < 1.0) rawADC = 1.0;
+  if (rawADC < 1.0) rawADC = 1.0; // Protección contra división por cero
 
-  // Conversion de tension a resistencia y temperatura
+  // Conversión de tensión a resistencia y aplicación del modelo Beta de Steinhart-Hart
   float R_ntc = 10000.0 * (rawADC / (4095.0 - rawADC));
   float tempK = 1.0 / ((1.0 / Temp0) + (log(R_ntc / R0) / Beta));
   float tempC = tempK - 273.15;
 
-  // 2. Cálculo del algoritmo PID
+  // --------------------------------------------------------------------------
+  // 2. ALGORITMO DE CONTROL PID DISCRETO
+  // --------------------------------------------------------------------------
   unsigned long now = millis();
   float dt = (now - last_time) / 1000.0;
   if (dt <= 0) dt = 0.1;
@@ -312,30 +362,35 @@ void loop() {
 
   float error = setpoint - tempC;
   
-  // Anti-windup para el termino integral
+  // Término Integral con restricción Anti-windup
   integral += error * dt;
   if (integral > 100.0) integral = 100.0;
   if (integral < -100.0) integral = -100.0;
 
+  // Término Derivativo y suma de acciones
   float derivative = (error - last_error) / dt;
   last_error = error;
 
   float outputPID = (Kp * error) + (Ki * integral) + (Kd * derivative);
 
-  // Saturacion de la salida PID (0 a 255)
+  // Saturación de la variable de control al rango PWM de 8 bits (0 - 255)
   if (outputPID > 255.0) outputPID = 255.0;
   if (outputPID < 0.0) outputPID = 0.0;
 
-  // Aplicacion de PWM con logica invertida
+  // Aplicación de la señal PWM con lógica invertida por la etapa BJT/MOSFET
   int pwmInvertido = 255 - (int)outputPID;
   analogWrite(HEATER_PIN, pwmInvertido);
 
-  // 3. Lectura de peso filtrado
+  // --------------------------------------------------------------------------
+  // 3. ADQUISICIÓN Y ESCALADO DE PESAJE DIGITAL (HX711)
+  // --------------------------------------------------------------------------
   float peso_g = MyScale.readWeight() * factor_correccion;
   if (peso_g < 0) peso_g = 0; 
   float peso_kg = peso_g / 1000.0;
 
-  // 4. Actualizacion de la pantalla LCD
+  // --------------------------------------------------------------------------
+  // 4. DESPLIEGUE EN PANTALLA LCD Y TELEMETRÍA POR PUERTO SERIE
+  // --------------------------------------------------------------------------
   lcd.setCursor(0, 0);
   lcd.print("T:");
   lcd.print(tempC, 1);
@@ -353,8 +408,13 @@ void loop() {
   lcd.print((outputPID / 255.0) * 100.0, 0);
   lcd.print("% ");
 
-  // Salida por monitor serie para registro de datos
-  Serial.print("Temp: "); Serial.
+  Serial.print("Temp: "); Serial.print(tempC, 2);
+  Serial.print(" C | PWM: "); Serial.print(outputPID);
+  Serial.print(" | Peso: "); Serial.print(peso_kg, 2);
+  Serial.println(" kg");
+
+  delay(200);
+}
 ---
 
 # REFERENCIAS
