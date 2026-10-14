@@ -135,6 +135,228 @@ El desarrollo de tecnología biomédica implica evaluar la relación entre el co
 
 ---
 
+# III. METODOLOGÍA Y DESARROLLO EXPERIMENTAL
+
+El desarrollo del prototipo de incubadora neonatal a escala se dividió en tres etapas interconectadas: el diseño de las etapas analógicas de acondicionamiento y lógica de control (Parte A), la integración física de la cabina y la programación del microcontrolador ESP32 (Parte B), y la realización de pruebas de estabilización e instrumentación en laboratorio (Parte C).
+
+---
+
+## A. Arquitectura del Sistema
+Se utilizó un microcontrolador ESP32 como unidad principal para la adquisición de datos, ejecución del algoritmo de control y despliegue de información. La distribución de los pines analógicos, digitales y buses de comunicación para los módulos del prototipo se consolida en la Tabla I.
+
+### Tabla I: Asignación de Pines y Periféricos en la ESP32
+
+| Módulo / Componente | Pin ESP32 | Modo / Protocolo | Función Técnica |
+| :--- | :--- | :--- | :--- |
+| **Sensor NTC (10 kΩ)** | GPIO 34 | ADC1_CH6 (Entrada Analógica) | Captura del voltaje variable en el divisor resistivo |
+| **Driver de Potencia** | GPIO 25 | Salida Digital / PWM | Conmutación de la etapa de potencia del calefactor |
+| **HX711 DOUT** | GPIO 19 | Entrada Digital | Recepción de datos serie de 24 bits de la celda de carga |
+| **HX711 SCK** | GPIO 18 | Salida Digital | Reloj de sincronización para la lectura del HX711  |
+| **LCD I2C (SDA)** | GPIO 21 | Bus I2C (SDA) | Transmisión de datos para la pantalla LCD 16x2 |
+| **LCD I2C (SCL)** | GPIO 22 | Bus I2C (SCL) | Reloj del bus I2C para la pantalla LCD  |
+
+---
+
+## B. Acondicionamiento Analógico del Sensor de Temperatura
+Para monitorear la variable térmica dentro del recipiente, se diseñó un circuito divisor de tensión alimentado a 3.3 V compuesto por un termistor NTC de $10\text{ k}\Omega$ a $25\ ^\circ\text{C}$ ($\beta = 3950\text{ K}$) y una resistencia fija de precisión $R_{\text{ref}} = 10\text{ k}\Omega$ [2]. 
+
+La tensión leída por el puerto analógico ADC1_CH6 de la ESP32 se transforma en la resistencia instantánea del sensor ($R_{\text{NTC}}$) mediante la relación del divisor:
+
+$$
+R_{\text{NTC}} = R_{\text{ref}} \cdot \left( \frac{V_{cc} - V_{\text{ADC}}}{V_{\text{ADC}}} \right) = 10000 \cdot \left( \frac{N_{\text{ADC}}}{4095 - N_{\text{ADC}}} \right)
+$$
+
+donde $N_{\text{ADC}}$ representa la lectura digital de 12 bits ($0$ a $4095$). La conversión de resistencia a temperatura absoluta $T$ en Kelvin se realiza evaluando la ecuación del modelo Beta de Steinhart-Hart [4]:
+
+$$
+T = \frac{1}{\frac{1}{T_0} + \frac{1}{\beta} \ln\left(\frac{R_{\text{NTC}}}{R_0}\right)}
+$$
+
+con $T_0 = 298.15\text{ K}$ ($25\ ^\circ\text{C}$) y $R_0 = 10000\ \Omega$. Finalmente, la temperatura en grados Celsius se obtiene al restar $273.15$.
+
+---
+
+## C. Etapa de Potencia y Modulación PWM
+El elemento de calefacción consiste en una resistencia de $10\ \Omega / 20\text{W}$ acoplada a un ventilador de $12\text{V}$ DC para impulsar el flujo de aire por convección [1, 2]. Puesto que las salidas digitales de la ESP32 entregan un máximo de $12\text{ mA}$ a $3.3\text{V}$, se requirió un circuito de acoplamiento de potencia [2].
+
+La señal PWM enviada por el GPIO 25 se conectó a la base de un transistor BJT 2N2222 con una resistencia de imitación de $1\text{ k}\Omega$. Este transistor opera como etapa preamplificadora para activar la compuerta de un MOSFET IRFZ44N conectado a la fuente principal de $12\text{V}$. Este arreglo produce una inversión de la señal de control:
+* Un nivel lógico ALTO en la ESP32 satura el transistor BJT, llevando la compuerta del MOSFET a tierra (desconectando el calefactor).
+* Un nivel lógico BAJO en la ESP32 corta el transistor BJT, permitiendo la activación de la compuerta del MOSFET (conectando el calefactor).
+
+Debido a esta configuración física, la salida del algoritmo PID se calcula con lógica invertida en el firmware:
+
+$$
+\text{PWM}_{\text{aplicado}} = 255 - \text{sat}(u[k], 0, 255)
+$$
+
+---
+
+## D. Algoritmo de Control PID Discreto
+La regulación automática de la temperatura ambiente se estructuró mediante un algoritmo PID en tiempo discreto con un período de muestreo de $\Delta t \approx 0.1\text{ s}$. El error de temperatura se calcula respecto al valor de consigna dentro del rango de confort neutro ($T_{\text{setpoint}} = 36.5\ ^\circ\text{C}$) [3]:
+
+$$
+e[k] = T_{\text{setpoint}} - T[k]
+$$
+
+La acción de control $u[k]$ combina de forma matemática las tres componentes del controlador:
+
+$$
+u[k] = K_p \cdot e[k] + K_i \sum_{j=0}^{k} e[j]\Delta t + K_d \left( \frac{e[k] - e[k-1]}{\Delta t} \right)
+$$
+
+Los valores de ganancia sintonizados experimentalmente para el prototipo fueron $K_p = 15.0$, $K_i = 0.5$ y $K_d = 2.0$. Para evitar la saturación de la suma acumulada (*anti-windup*), se impuso un límite estricto a la componente integral:
+
+$$
+-100 \le \sum e[j]\Delta t \le 100
+$$
+
+---
+
+## E. Subsistema de Pesaje y Calibración del Módulo HX711
+El pesaje continuo del paciente dentro del entorno controlado se resolvió mediante una celda de carga de aluminio de $2\text{ kg}$ instalada bajo la base del colchón [1]. Las galgas extensométricas dispuestas en puente de Wheatstone entregan variaciones de milivoltios al integrado HX711 [1].
+
+Para atenuar las oscilaciones causadas por vibraciones de la estructura o por el viento del ventilador, se aplicó un filtro digital de promedio sobre 20 lecturas consecutivas. La conversión de la señal cruda a peso en gramos se calcula restando la masa estática en vacío ($L_{\text{tara}}$) y aplicando el factor de calibración obtenido en laboratorio ($5.405$) [2]:
+
+$$
+\text{Masa}_{(\text{g})} = (L_{\text{lectura}} - L_{\text{tara}}) \cdot 5.405
+$$
+
+El valor final se procesa dividiendo entre $1000$ para proyectar la masa en kilogramos ($\text{kg}$) sobre la pantalla LCD.
+
+---
+
+## F. Estructura Mecánica de la Cabina
+La cabina del prototipo se construyó utilizando paneles de acrílico transparente con dimensiones a escala de $90\text{ cm} \times 40\text{ cm} \times 45\text{ cm}$ [1, 2]. Esta envolvente reduce las pérdidas térmicas causadas por corrientes de aire del recinto y cuenta con una portezuela abatible que permite simular el acceso médico sin exponer la totalidad de la cámara al exterior [1].
+
+---
+
+## G. Firmware Integrado en C++ (ESP32)
+
+El programa completo cargado en la ESP32 para la ejecución simultánea del control térmico PID, lectura del NTC, filtrado del pesaje y despliegue en la pantalla LCD es el siguiente:
+
+```cpp
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <DFRobot_HX711.h>
+#include <math.h>
+
+// Asignacion de pines
+#define NTC_PIN 34
+#define HEATER_PIN 25
+#define HX711_DOUT 19
+#define HX711_SCK 18
+
+// Instancias de perifericos
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+DFRobot_HX711 MyScale(HX711_DOUT, HX711_SCK);
+
+// Parametros del termistor NTC
+const float Beta = 3950.0;
+const float R0 = 10000.0;
+const float Temp0 = 298.15;
+
+// Parametros del control PID
+float setpoint = 36.5;
+float Kp = 15.0;
+float Ki = 0.5;
+float Kd = 2.0;
+
+float integral = 0.0;
+float last_error = 0.0;
+unsigned long last_time = 0;
+
+// Factor de calibracion de la celda de carga
+float factor_correccion = 5.405;
+
+void setup() {
+  Serial.begin(115200);
+
+  // Configuración de la salida PWM (Invertida por la etapa BJT)
+  pinMode(HEATER_PIN, OUTPUT);
+  digitalWrite(HEATER_PIN, HIGH); 
+
+  // Inicializacion de pantalla LCD sobre I2C
+  Wire.begin(21, 22);
+  lcd.init();
+  lcd.backlight();
+
+  // Pantalla de bienvenida
+  lcd.setCursor(0, 0);
+  lcd.print("   INCUBADORA   ");
+  lcd.setCursor(0, 1);
+  lcd.print("SISTEMA ACTIVO ");
+  delay(3000);
+  lcd.clear();
+}
+
+void loop() {
+  // 1. Lectura y filtrado del termistor NTC (Promedio 20 muestras)
+  long sumaADC = 0;
+  for (int i = 0; i < 20; i++) {
+    sumaADC += analogRead(NTC_PIN);
+    delay(2);
+  }
+  float rawADC = (float)sumaADC / 20.0;
+  if (rawADC < 1.0) rawADC = 1.0;
+
+  // Conversion de tension a resistencia y temperatura
+  float R_ntc = 10000.0 * (rawADC / (4095.0 - rawADC));
+  float tempK = 1.0 / ((1.0 / Temp0) + (log(R_ntc / R0) / Beta));
+  float tempC = tempK - 273.15;
+
+  // 2. Cálculo del algoritmo PID
+  unsigned long now = millis();
+  float dt = (now - last_time) / 1000.0;
+  if (dt <= 0) dt = 0.1;
+  last_time = now;
+
+  float error = setpoint - tempC;
+  
+  // Anti-windup para el termino integral
+  integral += error * dt;
+  if (integral > 100.0) integral = 100.0;
+  if (integral < -100.0) integral = -100.0;
+
+  float derivative = (error - last_error) / dt;
+  last_error = error;
+
+  float outputPID = (Kp * error) + (Ki * integral) + (Kd * derivative);
+
+  // Saturacion de la salida PID (0 a 255)
+  if (outputPID > 255.0) outputPID = 255.0;
+  if (outputPID < 0.0) outputPID = 0.0;
+
+  // Aplicacion de PWM con logica invertida
+  int pwmInvertido = 255 - (int)outputPID;
+  analogWrite(HEATER_PIN, pwmInvertido);
+
+  // 3. Lectura de peso filtrado
+  float peso_g = MyScale.readWeight() * factor_correccion;
+  if (peso_g < 0) peso_g = 0; 
+  float peso_kg = peso_g / 1000.0;
+
+  // 4. Actualizacion de la pantalla LCD
+  lcd.setCursor(0, 0);
+  lcd.print("T:");
+  lcd.print(tempC, 1);
+  lcd.print("C Set:");
+  lcd.print(setpoint, 1);
+  lcd.print("C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("P:");
+  lcd.print(peso_kg, 2);
+  lcd.print("kg ");
+
+  lcd.setCursor(10, 1);
+  lcd.print("H:");
+  lcd.print((outputPID / 255.0) * 100.0, 0);
+  lcd.print("% ");
+
+  // Salida por monitor serie para registro de datos
+  Serial.print("Temp: "); Serial.
+---
+
 # REFERENCIAS
 
 * [1] C. G. K. Tran, A. Gibson, D. Wong, D. Tilahun, N. Selock, T. Good, and G. Rao, "Designing a low-cost multifunctional infant incubator," *J. Lab. Autom.*, vol. 19, no. 3, pp. 332–337, Jun. 2014. doi: 10.1177/2211068214530391[cite: 10].
