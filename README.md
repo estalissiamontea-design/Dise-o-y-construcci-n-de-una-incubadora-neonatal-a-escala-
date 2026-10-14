@@ -38,48 +38,48 @@ La importancia de este proyecto radicó en enfrentar de forma práctica los prob
 # II. MARCO TEÓRICO
 
 ## A. Termorregulación Fisiológica y Vulnerabilidad Neonatal
-La termorregulación es el proceso fisiológico mediante el cual el organismo mantiene un equilibrio dinámico entre la producción metabólica de calor y las pérdidas hacia el entorno[cite: 5]. En el recién nacido, y con mayor severidad en el neonato prematuro, esta capacidad se encuentra gravemente comprometida por factores anatómicos, metabólicos y neurológicos[cite: 5, 10]:
+La termorregulación es el proceso fisiológico mediante el cual el organismo mantiene un equilibrio dinámico entre la producción metabólica de calor y las pérdidas hacia el entorno [5]. En el recién nacido, y con mayor severidad en el neonato prematuro, esta capacidad se encuentra gravemente comprometida por factores anatómicos, metabólicos y neurológicos [5, 10]:
 
-* **Relación superficie-masa elevada:** La amplia superficie corporal en proporción con el volumen o peso genera una tasa de pérdida calórica por unidad de masa significativamente mayor[cite: 5].
-* **Inmadurez de la barrera epidérmica:** La piel del prematuro cuenta con una capa córnea delgada e hipervascularizada, lo que facilita la pérdida rápida de temperatura y la evaporación transepidérmica de fluidos[cite: 5, 10].
-* **Deficiencia de tejido adiposo pardo:** La termogénesis química o sin tiritar (*non-shivering thermogenesis*) depende de la oxidación del tejido adiposo pardo, cuyos depósitos son mínimos o inexistentes en infantes nacidos antes de las 32 semanas de gestación[cite: 5, 10].
-* **Centro vasomotor inmaduro:** La respuesta autónoma de vasoconstricción periférica ante estímulos térmicos de frío no se ejecuta con la velocidad ni la intensidad requeridas para retener el calor corporal[cite: 5, 10].
+* **Relación superficie-masa elevada:** La amplia superficie corporal en proporción con el volumen o peso genera una tasa de pérdida calórica por unidad de masa significativamente mayor [5].
+* **Inmadurez de la barrera epidérmica:** La piel del prematuro cuenta con una capa córnea delgada e hipervascularizada, lo que facilita la pérdida rápida de temperatura y la evaporación transepidérmica de fluidos [5, 10].
+* **Deficiencia de tejido adiposo pardo:** La termogénesis química o sin tiritar (*non-shivering thermogenesis*) depende de la oxidación del tejido adiposo pardo, cuyos depósitos son mínimos o inexistentes en infantes nacidos antes de las 32 semanas de gestación [5, 10].
+* **Centro vasomotor inmaduro:** La respuesta autónoma de vasoconstricción periférica ante estímulos térmicos de frío no se ejecuta con la velocidad ni la intensidad requeridas para retener el calor corporal [5, 10].
 
-El concepto central en el cuidado neonatal es el Ambiente Térmico Neutro (ATN)[cite: 5]. Se define como el rango de temperatura ambiental dentro del cual el recién nacido sostiene su temperatura corporal central dentro de los límites fisiológicos normotérmicos (36.5 °C a 37.5 °C)[cite: 8, 10], minimizando el consumo de oxígeno y el gasto metabólico basal[cite: 5]. La pérdida calórica se rige por cuatro mecanismos físicos fundamentales:
+El concepto central en el cuidado neonatal es el Ambiente Térmico Neutro (ATN) [5]. Se define como el rango de temperatura ambiental dentro del cual el recién nacido sostiene su temperatura corporal central dentro de los límites fisiológicos normotérmicos (36.5 °C a 37.5 °C) [8, 10], minimizando el consumo de oxígeno y el gasto metabólico basal [5]. La pérdida calórica se rige por cuatro mecanismos físicos fundamentales:
 
 $$\dot{Q}_{\text{pérdida}} = \dot{Q}_{\text{conducción}} + \dot{Q}_{\text{convección}} + \dot{Q}_{\text{radiación}} + \dot{Q}_{\text{evaporación}}$$
 
-* **Conducción:** Transferencia de calor por contacto directo del cuerpo del neonato con superficies rígidas o frías, como la colchoneta o las sábanas[cite: 5].
-* **Convección:** Transferencia calórica producida por el flujo de aire que circula directamente sobre la superficie cutánea del prematuro[cite: 5].
-* **Radiación:** Emisión de energía en forma de ondas infrarrojas hacia las paredes internas de la cabina cuando estas se encuentran a menor temperatura que la piel[cite: 5].
-* **Evaporación:** Pérdida de calor latente asociada al cambio de fase del agua a través de la piel y del tracto respiratorio[cite: 5].
+* **Conducción:** Transferencia de calor por contacto directo del cuerpo del neonato con superficies rígidas o frías, como la colchoneta o las sábanas [5].
+* **Convección:** Transferencia calórica producida por el flujo de aire que circula directamente sobre la superficie cutánea del prematuro [5].
+* **Radiación:** Emisión de energía en forma de ondas infrarrojas hacia las paredes internas de la cabina cuando estas se encuentran a menor temperatura que la piel [5].
+* **Evaporación:** Pérdida de calor latente asociada al cambio de fase del agua a través de la piel y del tracto respiratorio [5].
 
 ---
 
 ## B. Identificación Detallada de las Partes y Subsistemas de una Incubadora Neonatal
-Una incubadora neonatal es un dispositivo biomédico complejo diseñado para replicar de forma artificial el microclima uterino[cite: 5, 10]. Se compone de múltiples subsistemas mecánicos, mecátronicos, de acondicionamiento y de interfaz[cite: 5, 8]:
+Una incubadora neonatal es un dispositivo biomédico complejo diseñado para replicar de forma artificial el microclima uterino [5, 10]. Se compone de múltiples subsistemas mecánicos, mecátronicos, de acondicionamiento y de interfaz [5, 8]:
 
-* **Capota o Cabina de Aislamiento:** Corresponde a la cubierta transparente fabricada habitualmente en acrílico de alta resistencia mecánica[cite: 8]. En prototipos a escala, mantiene dimensiones estandarizadas de 90 cm x 40 cm x 45 cm[cite: 8]. Su función principal es delimitar el volumen del microclima, aislar al neonato de corrientes de aire externas, reducir pérdidas radiativas/convectivas y garantizar visibilidad constante[cite: 5, 8]. Incorpora un sistema de apertura/cierre y portezuelas de acceso (*irises*) para permitir la manipulación médica sin generar caídas drásticas de temperatura[cite: 8].
-* **Modulo Calefactor (Elemento Resistivo):** Es la fuente primaria de generación térmica, constituida por una resistencia eléctrica de potencia (10 Ω / 20 W en prototipos a escala)[cite: 5, 8]. Funciona bajo el principio del efecto Joule ($\dot{Q} = I^2 R$), convirtiendo la corriente suministrada en energía calórica para calentar el volumen de aire circulante[cite: 5, 8].
-* **Turbina o Ventilador de Convección Forzada:** Elemento electromecánico encargado de aspirar el aire del interior o exterior, forzándolo a pasar por el elemento calefactor[cite: 5, 8]. Su función es generar una corriente laminar uniforme que distribuya el calor homogéneamente en toda la cabina, eliminando puntos fríos o gradientes de temperatura peligrosos[cite: 5, 8].
-* **Cámara de Humidificación:** Depósito de agua con un sistema de evaporación controlado que incrementa la humedad relativa dentro de la cabina a valores entre 70% y 85%[cite: 5]. Esto evita la deshidratación epidérmica y atenúa la pérdida calórica evaporativa[cite: 5].
-* **Báscula y Sistema de Pesaje Interno:** Estructura mecánica dispuesta bajo la colchoneta que integra celdas de carga[cite: 8]. Permite estimar la masa corporal del recién nacido sin necesidad de extraerlo de la incubadora, evitando exponerlo a choques térmicos[cite: 5, 8].
-* **Subsistema de Sensado Térmico:** Sondas de temperatura basadas en termistores NTC colocados en el ambiente interno y en la piel del paciente[cite: 5, 7]. Proveen la señal de realimentación para que el procesador evalúe si la temperatura se mantiene dentro del rango objetivo[cite: 5, 8].
-* **Unidad de Procesamiento y Control:** Tarjeta electrónica (microcontrolador ESP32) que ejecuta en tiempo real el algoritmo de control de lazo cerrado (PID)[cite: 5, 8]. Interpreta las lecturas de los sensores y regula la potencia del calefactor mediante señales moduladas[cite: 5, 8].
-* **Interfaz de Usuario (HMI) y Panel de Alertas:** Pantalla LCD (I2C) y panel indicador visual mediante LEDs[cite: 8]. Su función es mostrar la temperatura actual, el setpoint y el peso en kilogramos, además de activar códigos de color (LED verde en rango normal 36.0 °C - 37.5 °C; LED rojo para temperaturas fuera de rango) que alerten al personal[cite: 5, 8].
+* **Capota o Cabina de Aislamiento:** Corresponde a la cubierta transparente fabricada habitualmente en acrílico de alta resistencia mecánica [8]. En prototipos a escala, mantiene dimensiones estandarizadas de 90 cm x 40 cm x 45 cm [8]. Su función principal es delimitar el volumen del microclima, aislar al neonato de corrientes de aire externas, reducir pérdidas radiativas/convectivas y garantizar visibilidad constante [5, 8]. Incorpora un sistema de apertura/cierre y portezuelas de acceso (*irises*) para permitir la manipulación médica sin generar caídas drásticas de temperatura [8].
+* **Modulo Calefactor (Elemento Resistivo):** Es la fuente primaria de generación térmica, constituida por una resistencia eléctrica de potencia (10 Ω / 20 W en prototipos a escala) [5, 8]. Funciona bajo el principio del efecto Joule ($\dot{Q} = I^2 R$), convirtiendo la corriente suministrada en energía calórica para calentar el volumen de aire circulante [5, 8].
+* **Turbina o Ventilador de Convección Forzada:** Elemento electromecánico encargado de aspirar el aire del interior o exterior, forzándolo a pasar por el elemento calefactor [5, 8]. Su función es generar una corriente laminar uniforme que distribuya el calor homogéneamente en toda la cabina, eliminando puntos fríos o gradientes de temperatura peligrosos [5, 8].
+* **Cámara de Humidificación:** Depósito de agua con un sistema de evaporación controlado que incrementa la humedad relativa dentro de la cabina a valores entre 70% y 85% [5]. Esto evita la deshidratación epidérmica y atenúa la pérdida calórica evaporativa [5].
+* **Báscula y Sistema de Pesaje Interno:** Estructura mecánica dispuesta bajo la colchoneta que integra celdas de carga [8]. Permite estimar la masa corporal del recién nacido sin necesidad de extraerlo de la incubadora, evitando exponerlo a choques térmicos [5, 8].
+* **Subsistema de Sensado Térmico:** Sondas de temperatura basadas en termistores NTC colocados en el ambiente interno y en la piel del paciente [5, 7]. Proveen la señal de realimentación para que el procesador evalúe si la temperatura se mantiene dentro del rango objetivo [5, 8].
+* **Unidad de Procesamiento y Control:** Tarjeta electrónica (microcontrolador ESP32) que ejecuta en tiempo real el algoritmo de control de lazo cerrado (PID) [5, 8]. Interpreta las lecturas de los sensores y regula la potencia del calefactor mediante señales moduladas [5, 8].
+* **Interfaz de Usuario (HMI) y Panel de Alertas:** Pantalla LCD (I2C) y panel indicador visual mediante LEDs [8]. Su función es mostrar la temperatura actual, el setpoint y el peso en kilogramos, además de activar códigos de color (LED verde en rango normal 36.0 °C - 37.5 °C; LED rojo para temperaturas fuera de rango) que alerten al personal [5, 8].
 
 ---
 
 ## C. Caracterización del Sensor NTC y Acondicionamiento por Divisor de Tensión
-Los termistores NTC (*Negative Temperature Coefficient*) son componentes semiconductores cuya resistencia decrece de manera exponencial a medida que incrementa la temperatura absoluta[cite: 5]. La respuesta del sensor se modela mediante la aproximación del parámetro Beta ($\beta$) de la ecuación de Steinhart-Hart[cite: 5]:
+Los termistores NTC (*Negative Temperature Coefficient*) son componentes semiconductores cuya resistencia decrece de manera exponencial a medida que incrementa la temperatura absoluta [5]. La respuesta del sensor se modela mediante la aproximación del parámetro Beta ($\beta$) de la ecuación de Steinhart-Hart [5]:
 
 $$R_{\text{NTC}}(T) = R_0 \cdot \exp \left( \beta \left( \frac{1}{T} - \frac{1}{T_0} \right) \right)$$
 
-En esta expresión, $R_0 = 10\text{ k}\Omega$ es la resistencia nominal a la temperatura de referencia $T_0 = 298.15\text{ K}$ ($25\ ^\circ\text{C}$), y $\beta = 3950\text{ K}$ es la constante característica del material semiconductor[cite: 5]. Despejando la temperatura $T$ en Kelvin en función de la resistencia $R_{\text{NTC}}$ calculada:
+En esta expresión, $R_0 = 10\text{ k}\Omega$ es la resistencia nominal a la temperatura de referencia $T_0 = 298.15\text{ K}$ ($25\ ^\circ\text{C}$), y $\beta = 3950\text{ K}$ es la constante característica del material semiconductor [5]. Despejando la temperatura $T$ en Kelvin en función de la resistencia $R_{\text{NTC}}$ calculada:
 
 $$\frac{1}{T} = \frac{1}{T_0} + \frac{1}{\beta} \ln\left(\frac{R_{\text{NTC}}}{R_0}\right) \quad \implies \quad T_{(^\circ\text{C})} = T - 273.15$$
 
-Para adaptar la variación de resistencia a un voltaje legible por la ESP32 (convertidor ADC de 12 bits con rango de 0 a 4095), se utiliza un divisor de tensión alimentado a $V_{cc} = 3.3\text{V}$ junto a una resistencia de referencia $R_{\text{ref}} = 10\text{ k}\Omega$[cite: 7]:
+Para adaptar la variación de resistencia a un voltaje legible por la ESP32 (convertidor ADC de 12 bits con rango de 0 a 4095), se utiliza un divisor de tensión alimentado a $V_{cc} = 3.3\text{V}$ junto a una resistencia de referencia $R_{\text{ref}} = 10\text{ k}\Omega$ [7]:
 
 $$V_{\text{ADC}} = V_{cc} \cdot \left( \frac{R_{\text{ref}}}{R_{\text{NTC}} + R_{\text{ref}}} \right) \quad \implies \quad R_{\text{NTC}} = R_{\text{ref}} \cdot \left( \frac{V_{cc} - V_{\text{ADC}}}{V_{\text{ADC}}} \right)$$
 
@@ -90,7 +90,7 @@ $$R_{\text{NTC}} = 10000 \cdot \left( \frac{N_{\text{ADC}}}{4095 - N_{\text{ADC}
 ---
 
 ## D. Control de Temperatura PID y Modulación PWM Invertida
-La regulación de la temperatura en lazo cerrado se ejecuta comparando continuamente la temperatura deseada ($T_{\text{setpoint}} = 36.5\ ^\circ\text{C}$) con el valor medido ($T(t)$)[cite: 5, 8], generando una variable de error:
+La regulación de la temperatura en lazo cerrado se ejecuta comparando continuamente la temperatura deseada ($T_{\text{setpoint}} = 36.5\ ^\circ\text{C}$) con el valor medido ($T(t)$) [5, 8], generando una variable de error:
 
 $$e(t) = T_{\text{setpoint}} - T(t)$$
 
@@ -115,11 +115,11 @@ $$
 ---
 
 ## E. Principio de Pesaje Digital: Puente de Wheatstone y Módulo HX711
-El sistema de estimación de peso se fundamenta en una celda de carga de aluminio con cuatro galgas extensométricas (*strain gauges*) configuradas en un **Puente de Wheatstone completo**[cite: 8]. Cuando una masa $M$ se ubica sobre la plataforma, la deformación mecánica altera la resistencia eléctrica de las galgas ($R \pm \Delta R$), generando un diferencial de voltaje en el orden de los milivoltios ($\text{mV}$)[cite: 8]:
+El sistema de estimación de peso se fundamenta en una celda de carga de aluminio con cuatro galgas extensométricas (*strain gauges*) configuradas en un **Puente de Wheatstone completo** [8]. Cuando una masa $M$ se ubica sobre la plataforma, la deformación mecánica altera la resistencia eléctrica de las galgas ($R \pm \Delta R$), generando un diferencial de voltaje en el orden de los milivoltios ($\text{mV}$) [8]:
 
 $$V_{\text{diferencial}} = V_{\text{excitación}} \cdot \left( \frac{\Delta R}{R} \right)$$
 
-Debido a la baja amplitud de este voltaje, se acopla el circuito integrado **HX711**, el cual incorpora un preamplificador de bajo ruido con ganancia de 128 y un convertidor analógico-digital (ADC) $\Sigma-\Delta$ de 24 bits, entregando una resolución de $2^{24} = 16,777,216$ niveles[cite: 8].
+Debido a la baja amplitud de este voltaje, se acopla el circuito integrado **HX711**, el cual incorpora un preamplificador de bajo ruido con ganancia de 128 y un convertidor analógico-digital (ADC) $\Sigma-\Delta$ de 24 bits, entregando una resolución de $2^{24} = 16,777,216$ niveles [8].
 
 La masa $M$ en kilogramos ($\text{kg}$) se obtiene descontando el peso estático inicial ($L_{\text{tara}}$) y aplicando el factor de calibración de escala $k_{\text{escala}} = 5.405$:
 
@@ -132,10 +132,10 @@ $$\bar{L} = \frac{1}{10} \sum_{i=1}^{10} L_i$$
 ---
 
 ## F. Análisis Comparativo de Costos y Soluciones Comerciales
-El desarrollo de tecnología biomédica implica evaluar la relación entre el costo de producción y las prestaciones operativas de seguridad exigidas por normas internacionales (e.g., IEC 60601-2-19 para incubadoras)[cite: 8, 9, 10]:
+El desarrollo de tecnología biomédica implica evaluar la relación entre el costo de producción y las prestaciones operativas de seguridad exigidas por normas internacionales (e.g., IEC 60601-2-19 para incubadoras) [8, 9, 10]:
 
-* **Sistemas Comerciales (e.g., Dräger Medical, LEEX Medical, Instrumentalia S.A.S.):** Tienen un costo de mercado que oscila entre **$15,000 USD y $35,000 USD** ($\approx 60.000.000$ a $140.000.000\text{ COP}$)[cite: 8, 9]. Ofrecen cabinas de doble pared acrílica para reducir pérdidas por radiación, servocontrol de humedad mediante evaporadores independientes, filtrado de aire de alta eficiencia (HEPA), básculas integradas con autorrango de alta precisión y circuitos redundantes de corte térmico por hardware independientes del procesador principal[cite: 5, 8, 9].
-* **Prototipo a Escala Desarrollado:** El costo total de materiales del prototipo ensamblado asciende a **$177,500 COP** (incluyendo tarjeta ESP32, celda de carga de 2 kg con HX711, NTC, elementos de potencia, estructura acrílica y LCD I2C)[cite: 8, 9]. Aunque este desarrollo demuestra la viabilidad de implementar control PID y pesaje digital a un costo sumamente bajo ($<0.3\%$ del valor de un equipo comercial)[cite: 8, 9], carece de la redundancia, el aislamiento galvánico y la precisión necesarios para una aplicación clínica real sin un proceso extenso de rediseño biomédico.
+* **Sistemas Comerciales (e.g., Dräger Medical, LEEX Medical, Instrumentalia S.A.S.):** Tienen un costo de mercado que oscila entre **$15,000 USD y $35,000 USD** ($\approx 60.000.000$ a $140.000.000\text{ COP}$) [8, 9]. Ofrecen cabinas de doble pared acrílica para reducir pérdidas por radiación, servocontrol de humedad mediante evaporadores independientes, filtrado de aire de alta eficiencia (HEPA), básculas integradas con autorrango de alta precisión y circuitos redundantes de corte térmico por hardware independientes del procesador principal[cite: 5, 8, 9].
+* **Prototipo a Escala Desarrollado:** El costo total de materiales del prototipo ensamblado asciende a **$177,500 COP** (incluyendo tarjeta ESP32, celda de carga de 2 kg con HX711, NTC, elementos de potencia, estructura acrílica y LCD I2C) [8, 9]. Aunque este desarrollo demuestra la viabilidad de implementar control PID y pesaje digital a un costo sumamente bajo ($<0.3\%$ del valor de un equipo comercial) [8, 9], carece de la redundancia, el aislamiento galvánico y la precisión necesarios para una aplicación clínica real sin un proceso extenso de rediseño biomédico.
 
 ---
 
