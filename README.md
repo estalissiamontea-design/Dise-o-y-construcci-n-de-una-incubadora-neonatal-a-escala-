@@ -432,27 +432,27 @@ La Tabla IV detalla el costo real de los componentes e insumos adquiridos en el 
 
 | Categoría Funcional | Componente / Insumo Específico | Cant. | Costo Unitario (COP) | Costo Subtotal (COP) |
 | :--- | :--- | :---: | :---: | :---: |
-| **Procesamiento e Interfaz** | Tarjeta de desarrollo ESP32 (30 pines) | 1 | $38,000 | $38,000 |
-| | Pantalla LCD 16x2 con adaptador I2C integrado | 1 | $24,000 | $24,000 |
-| **Etapa de Sensorización** | Celda de carga tipo barra de 5 kg de capacidad | 1 | $22,000 | $22,000 |
-| | Módulo amplificador ADC de 24 bits HX711 | 1 | $12,000 | $12,000 |
-| | Sensor NTC 10 kΩ (3950K) encapsulado | 1 | $3,500 | $3,500 |
-| **Etapa de Potencia y Pasivos** | Resistencia de alambre cerámico 10 Ω / 20 W | 1 | $8,500 | $8,500 |
-| | Transistor BJT 2N2222A (TO-92) | 2 | $800 | $1,600 |
-| | Transistor MOSFET IRFZ44N de canal N | 1 | $4,500 | $4,500 |
-| | Diodos de protección 1N4007 y kit de resistencias variadas | 1 kit | $5,000 | $5,000 |
-| **Fuente de Alimentación Discreta** | Transformador de alimentación (salida AC) | 1 | $25,000 | $25,000 |
-| | Puente rectificador de diodos | 1 | $3,000 | $3,000 |
-| | Regulador de voltaje lineal (Familia LM78XX) | 1 | $2,500 | $2,500 |
-| | Condensadores electrolíticos y cerámicos de filtrado | 4 | $1,000 | $4,000 |
-| **Conexión y Ensamble** | Protoboards de 830 puntos con bus de alimentación | 2 | $18,000 | $36,000 |
-| | Paquete de cables Jumper multifilar (M-M, M-H, H-H x 40 und) | 2 | $14,000 | $28,000 |
-| | Conectores tipo bornera de 2 pines | 4 | $1,200 | $4,800 |
-| **Estructura y Chasis Económico** | Acrílico moldeable / retazos para ventana de observación | 1 | $18,000 | $18,000 |
-| | Láminas de madera para base rígida de la galga | 1 | $12,000 | $12,000 |
-| | Cartón paja/corrugado, láminas de foami y silicona de pegado | 1 kit | $15,000 | $15,000 |
-| | Tornillería pequeña M3 para fijación de soporte | 1 kit | $3,000 | $3,000 |
-| **TOTAL COSTO DIRECTO (BOM)** | — | — | — | **$270,400** |
+| **Procesamiento e Interfaz** | Tarjeta de desarrollo ESP32 (30 pines) | 1 | 38,000 | 38,000 |
+| | Pantalla LCD 16x2 con adaptador I2C integrado | 1 | 24,000 | 24,000 |
+| **Etapa de Sensorización** | Celda de carga tipo barra de 5 kg de capacidad | 1 | 22,000 | 22,000 |
+| | Módulo amplificador ADC de 24 bits HX711 | 1 | 12,000 | 12,000 |
+| | Sensor NTC 10 kΩ (3950K) encapsulado | 1 | 3,500 | 3,500 |
+| **Etapa de Potencia y Pasivos** | Resistencia de alambre cerámico 10 Ω / 20 W | 1 | 8,500 | 8,500 |
+| | Transistor BJT 2N2222A (TO-92) | 2 | 800 | 1,600 |
+| | Transistor MOSFET IRFZ44N de canal N | 1 | 4,500 | 4,500 |
+| | Diodos de protección 1N4007 y kit de resistencias variadas | 1 kit | 5,000 | 5,000 |
+| **Fuente de Alimentación Discreta** | Transformador de alimentación (salida AC) | 1 | 25,000 | 25,000 |
+| | Puente rectificador de diodos | 1 | 3,000 | 3,000 |
+| | Regulador de voltaje lineal  | 1 | 2,500 | 2,500 |
+| | Condensadores electrolíticos y cerámicos de filtrado | 4 | 1,000 | 4,000 |
+| **Conexión y Ensamble** | Protoboards de 830 puntos con bus de alimentación | 2 | 18,000 | 36,000 |
+| | Paquete de cables Jumper multifilar (M-M, M-H, H-H x 40 und) | 2 | 14,000 | 28,000 |
+| | Conectores tipo bornera de 2 pines | 4 | 1,200 | 4,800 |
+| **Estructura y Chasis Económico** | Acrílico moldeable / retazos para ventana de observación | 1 | 18,000 | 18,000 |
+| | Láminas de madera para base rígida de la galga | 1 | 12,000 | 12,000 |
+| | Cartón paja/corrugado, láminas de foami y silicona de pegado | 1 kit | 15,000 | 15,000 |
+| | Tornillería pequeña M3 para fijación de soporte | 1 kit | 3,000 | 3,000 |
+| **TOTAL COSTO** | — | — | — | **270,400** |
 
 ---
 
@@ -462,8 +462,14 @@ Para poner en perspectiva el presupuesto final del prototipo ($270,400 COP), la 
 
 #### Tabla V: Cuadro Comparativo de Incubadoras y Prototipos del Mercado
 
-| Parámetro | Incubadora Comercial Gama Alta (ej. Dräger / YP2000) | Incubadora Clínica Estándar / Transporte (ej. YP920) | Prototipos de Investigación (Arduino / Raspberry Pi) | Protot
-
+| Parámetro | Incubadora Comercial Gama Alta (ej. Dräger / YP2000) | Incubadora Clínica Estándar / Transporte (ej. YP920) | Prototipos de Investigación (Arduino / Raspberry Pi) | Prototipo Desarrollado (ESP32) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Rango de Precio (COP)** | $50,000,000 - $120,000,000 COP | $18,000,000 - $28,000,000 COP | $600,000 - $1,200,000 COP | **$270,400 COP** |
+| **Sistema de Alimentación** | Fuentes conmutadas médicas redundantes e inmunizadas | Fuente conmutada regulada de grado médico | Adaptador o fuente conmutada comercial | Fuente artesanal (Transformador + Puente + LM78XX) |
+| **Control Térmico** | Calefactor cerámico/blindado (200W - 400W) con flujo controlado | Resistencia de alta potencia (100W - 200W) | Calefactor PTC o bombillo halógeno (50W - 100W) | Resistencia de alambre cerámico (20W) |
+| **Monitoreo de Peso** | Balanza integrada de precisión clínica ($\pm 1\text{ g}$) | Balanza de alta resolución externa opcional | Celda de carga 1 kg - 5 kg con HX711 | Celda de carga 5 kg con HX711 en base de madera |
+| **Estructura / Materiales** | Doble pared de acrílico grado médico termoformado | Acrílico de alta densidad reforzado | Acrílico mecanizado o impresión 3D completa | Estructura ligera (Cartón, foami, acrílico moldeable y madera) |
+| **Grado de Homologación** | Certificación ISO 13485 / FDA / Registro Sanitario | Certificación IEC 60601 / Registro Sanitario | Sin certificación (Prototipo académico) | Sin certificación (Prototipo académico) |
 ---
 
 # IV. ANÁLISIS DE RESULTADOS
