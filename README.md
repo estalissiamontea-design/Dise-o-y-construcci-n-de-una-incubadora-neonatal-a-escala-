@@ -415,6 +415,7 @@ void loop() {
 
   delay(200);
 }
+```
 ---
 
 # IV. ANÁLISIS DE RESULTADOS Y DIAGNÓSTICO DE FALLAS
