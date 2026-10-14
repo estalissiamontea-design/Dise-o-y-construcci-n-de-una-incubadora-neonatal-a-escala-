@@ -239,15 +239,15 @@ El programa desarrollado para la tarjeta ESP32 se estructuró en C++ utilizando 
 ### 1. Desglose y Análisis del Firmware
 
 #### a. Inclusión de Librerías y Asignación de Pines
-El programa utiliza la librería `math.h` para el cálculo del logaritmo natural (`log()`) necesario en la conversión del termistor NTC mediante la ecuación de Steinhart-Hart [4]. Para la pantalla LCD se emplean `Wire.h` y `LiquidCrystal_I2C.h`, permitiendo la comunicación por bus I2C utilizando solo dos líneas de datos. Por su parte, la comunicación con el módulo de pesaje de 24 bits se realiza a través de la librería `DFRobot_HX711.h` [1, 2].
+El programa utiliza la librería `math.h` para el cálculo del logaritmo natural (`log()`) necesario en la conversión del termistor NTC mediante la ecuación de Steinhart-Hart [4]. Para la pantalla LCD se emplean `Wire.h` y `LiquidCrystal_I2C.h`, permitiendo la comunicación por bus I2C utilizando solo dos líneas de datos. Por su parte, la comunicación con el módulo de pesaje de 24 bits se realiza a través de la librería `DFRobot_HX711.h`.
 
 La distribución fija de pines en la ESP32 queda configurada de la siguiente manera:
 * `NTC_PIN (GPIO 34)`: Canal analógico de entrada (ADC1_CH6).
-* `HEATER_PIN (GPIO 25)`: Salida de Modulación por Ancho de Pulso (PWM) hacia la etapa de potencia [1].
-* `HX711_DOUT (GPIO 19)` y `HX711_SCK (GPIO 18)`: Pines de datos serie y reloj para la celda de carga [1].
+* `HEATER_PIN (GPIO 25)`: Salida de Modulación por Ancho de Pulso (PWM) hacia la etapa de potencia.
+* `HX711_DOUT (GPIO 19)` y `HX711_SCK (GPIO 18)`: Pines de datos serie y reloj para la celda de carga.
 
 #### b. Configuración e Inicialización (`setup`)
-En el bloque `setup()`, se inicializa el monitor serie a 115200 baudios para la depuración de datos. El pin `HEATER_PIN` se define como salida digital y se fuerza a un estado ALTO (`HIGH`). Esta acción es crítica por seguridad: dado que la etapa de potencia con el transistor BJT 2N2222 invierte la señal lógica, un nivel ALTO inicial garantiza que la compuerta del MOSFET IRFZ44N permanezca a tierra, evitando que la resistencia calefactora de $10\ \Omega / 20\text{W}$ se encienda de manera accidental durante el arranque del microcontrolador [1, 2]. Posteriormente, se inicializa el bus I2C en los pines GPIO 21 (SDA) y GPIO 22 (SCL) y se muestra la pantalla de bienvenida.
+En el bloque `setup()`, se inicializa el monitor serie a 115200 baudios para la depuración de datos. El pin `HEATER_PIN` se define como salida digital y se fuerza a un estado ALTO (`HIGH`). Esta acción es crítica por seguridad: dado que la etapa de potencia con el transistor BJT 2N2222 invierte la señal lógica, un nivel ALTO inicial garantiza que la compuerta del MOSFET IRFZ44N permanezca a tierra, evitando que la resistencia calefactora de $10\ \Omega / 20\text{W}$ se encienda de manera accidental durante el arranque del microcontrolador. Posteriormente, se inicializa el bus I2C en los pines GPIO 21 (SDA) y GPIO 22 (SCL) y se muestra la pantalla de bienvenida.
 
 #### c. Adquisición Analógica y Modelo Térmico
 Para mitigar el ruido electromagnético y la no linealidad del convertidor ADC de 12 bits de la ESP32, se toma un promedio móvil de 20 muestras consecutivas con un retardo de $2\text{ ms}$ entre lecturas [2]. El valor digital promediado ($N_{\text{ADC}}$) se convierte a resistencia instantánea del termistor ($R_{\text{NTC}}$) aplicando la fórmula del divisor de tensión:
@@ -259,12 +259,12 @@ Posteriormente, la resistencia se transforma a grados Celsius (`tempC`) mediante
 #### d. Algoritmo de Control PID Discreto e Inversión de Salida
 El control térmico calcula el error restando la temperatura actual del valor de consigna (`setpoint = 36.5` °C) [3]. El intervalo de tiempo $\Delta t$ transcurrido entre iteraciones se calcula dinámicamente con la función `millis()`.
 
-La componente integral acumula el error en el tiempo. Para evitar el fenómeno de *windup* (saturación de la integral por desviaciones prolongadas), se delimita su acumulación entre $-100$ y $100$. La componente derivativa evalúa la velocidad de cambio del error respecto a $\Delta t$. La suma de las tres acciones ($K_p = 15.0$, $K_i = 0.5$, $K_d = 2.0$) genera la variable `outputPID`, la cual se satura en el rango de $0$ a $255$. Debido a la inversión de fase que introduce el driver transistorizado, la potencia calculada se aplica de forma invertida mediante `255 - outputPID` [1].
+La componente integral acumula el error en el tiempo. Para evitar el fenómeno de *windup* (saturación de la integral por desviaciones prolongadas), se delimita su acumulación entre $-100$ y $100$. La componente derivativa evalúa la velocidad de cambio del error respecto a $\Delta t$. La suma de las tres acciones ($K_p = 15.0$, $K_i = 0.5$, $K_d = 2.0$) genera la variable `outputPID`, la cual se satura en el rango de $0$ a $255$. Debido a la inversión de fase que introduce el driver transistorizado, la potencia calculada se aplica de forma invertida mediante `255 - outputPID`.
 
-#### e. Lectura de Pesaje e Interfaz LCD
-La lectura bruta transmitida por el circuito integrado HX711 se escala multiplicándola por el factor de calibración ajustado en laboratorio (`factor_correccion = 5.405`) [1, 2]. Si el resultado es menor a cero debido a la deriva de tara, la variable se fuerza a cero gramos y luego se divide entre 1000 para obtener la masa en kilogramos (`peso_kg`).
+#### e. Interfaz LCD
+La lectura bruta transmitida por el circuito integrado HX711 se escala multiplicándola por el factor de calibración ajustado en laboratorio (`factor_correccion = 5.405`). Si el resultado es menor a cero debido a la deriva de tara, la variable se fuerza a cero gramos y luego se divide entre 1000 para obtener la masa en kilogramos (`peso_kg`).
 
-Finalmente, la pantalla LCD de 16x2 actualiza en la primera línea la temperatura medida y el punto de consigna, mientras que en la segunda línea despliega la masa corporal estimada y el porcentaje de trabajo del calefactor ($0\%$ a $100\%$) [2].
+Finalmente, la pantalla LCD de 16x2 actualiza en la primera línea la temperatura medida y el punto de consigna, mientras que en la segunda línea despliega la masa corporal estimada y el porcentaje de trabajo del calefactor ($0\%$ a $100\%$).
 
 ---
 
