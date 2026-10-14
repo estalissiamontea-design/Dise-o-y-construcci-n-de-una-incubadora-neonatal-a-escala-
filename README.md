@@ -417,6 +417,23 @@ void loop() {
 }
 ---
 
+# IV. ANÁLISIS DE RESULTADOS Y DIAGNÓSTICO DE FALLAS
+
+El desarrollo del prototipo permitió evaluar el comportamiento práctico de los subsistemas diseñados e identificar las limitaciones de hardware y de integración en el laboratorio. A diferencia del planteamiento teórico, el sistema no pudo ser validado en su totalidad debido a restricciones en el dimensionamiento de componentes y a fallos de señal en la etapa de adquisición.
+
+## Evaluación del Sistema de Calentamiento
+El subsistema de control de temperatura no se probó experimentalmente en la cabina. Durante la revisión del diseño y los componentes seleccionados, se determinó que la resistencia disponible de 20 W resultaba insuficiente para la transferencia térmica requerida en la cámara. Para lograr un incremento significativo de temperatura en un recinto de estas dimensiones se necesita una etapa de potencia con un consumo en vatios sustancialmente mayor. Al no realizarse la prueba física de calentamiento, el algoritmo de control térmico y la respuesta de la etapa de potencia no fueron validados en la práctica.
+
+## Evaluación del Sistema de Pesaje
+El subsistema de pesaje, conformado por la celda de carga de 5 kg y el módulo HX711, fue el único bloque sometido a pruebas físicas en el laboratorio. Durante la captura de datos, la lectura del peso mostró una inestabilidad constante en la pantalla LCD, registrando variaciones continuas de valor incluso al mantener una masa fija sobre la plataforma.
+
+Esta fluctuación impidió obtener una medición estática y se atribuye principalmente a los siguientes factores de instrumentación:
+
+* **Fallos de Conexión y Cableado:** La presencia de contactos falsos o un acoplamiento deficiente en las líneas del puente de Wheatstone y en los pines del HX711 alteró las lecturas en milivoltios enviadas hacia el microcontrolador.
+* **Ruido e Interferencia de la Red Eléctrica:** La falta de blindaje en los cables de señal y la ausencia de un filtro físico en la fuente de alimentación permitieron la entrada de ruido de la red eléctrica, afectando la estabilidad del convertidor de 24 bits.
+
+---
+
 # REFERENCIAS
 
 * [1] C. G. K. Tran, A. Gibson, D. Wong, D. Tilahun, N. Selock, T. Good, and G. Rao, "Designing a low-cost multifunctional infant incubator," *J. Lab. Autom.*, vol. 19, no. 3, pp. 332–337, Jun. 2014. doi: 10.1177/2211068214530391[cite: 10].
