@@ -418,22 +418,67 @@ void loop() {
 ```
 ---
 
-# IV. ANÁLISIS DE RESULTADOS Y DIAGNÓSTICO DE FALLAS
+# V. ESTIMACIÓN DE PRECIOS Y COMPARATIVA CON SISTEMAS SIMILARES
 
-El desarrollo del prototipo permitió evaluar el comportamiento práctico de los subsistemas diseñados e identificar las limitaciones de hardware y de integración en el laboratorio. A diferencia del planteamiento teórico, el sistema no pudo ser validado en su totalidad debido a restricciones en el dimensionamiento de componentes y a fallos de señal en la etapa de adquisición.
-
-## Evaluación del Sistema de Calentamiento
-El subsistema de control de temperatura no se probó experimentalmente en la cabina. Durante la revisión del diseño y los componentes seleccionados, se determinó que la resistencia disponible de 20 W resultaba insuficiente para la transferencia térmica requerida en la cámara. Para lograr un incremento significativo de temperatura en un recinto de estas dimensiones se necesita una etapa de potencia con un consumo en vatios sustancialmente mayor. Al no realizarse la prueba física de calentamiento, el algoritmo de control térmico y la respuesta de la etapa de potencia no fueron validados en la práctica.
-
-## Evaluación del Sistema de Pesaje
-El subsistema de pesaje, conformado por la celda de carga de 5 kg y el módulo HX711, fue el único bloque sometido a pruebas físicas en el laboratorio. Durante la captura de datos, la lectura del peso mostró una inestabilidad constante en la pantalla LCD, registrando variaciones continuas de valor incluso al mantener una masa fija sobre la plataforma.
-
-Esta fluctuación impidió obtener una medición estática y se atribuye principalmente a los siguientes factores de instrumentación:
-
-* **Fallos de Conexión y Cableado:** La presencia de contactos falsos o un acoplamiento deficiente en las líneas del puente de Wheatstone y en los pines del HX711 alteró las lecturas en milivoltios enviadas hacia el microcontrolador.
-* **Ruido e Interferencia de la Red Eléctrica:** La falta de blindaje en los cables de señal y la ausencia de un filtro físico en la fuente de alimentación permitieron la entrada de ruido de la red eléctrica, afectando la estabilidad del convertidor de 24 bits.
+El análisis económico permite evaluar la viabilidad financiera del prototipo frente a soluciones comerciales de grado médico y a otros proyectos de investigación. Para este proyecto, la etapa de alimentación y la estructura física se construyeron utilizando componentes discretos de electrónica básica e insumos de maquetación de bajo costo, reduciendo al mínimo la inversión inicial.
 
 ---
+
+### A. Desglose Racional de Costos del Prototipo Desarrollado
+
+La Tabla IV detalla el costo real de los componentes e insumos adquiridos en el comercio local para el ensamblaje del prototipo.
+
+#### Tabla IV: Presupuesto Detallado de Materiales e Insumos del Prototipo
+
+| Categoría Funcional | Componente / Insumo Específico | Cant. | Costo Unitario (COP) | Costo Subtotal (COP) |
+| :--- | :--- | :---: | :---: | :---: |
+| **Procesamiento e Interfaz** | Tarjeta de desarrollo ESP32 (30 pines) | 1 | $38,000 | $38,000 |
+| | Pantalla LCD 16x2 con adaptador I2C integrado | 1 | $24,000 | $24,000 |
+| **Etapa de Sensorización** | Celda de carga tipo barra de 5 kg de capacidad | 1 | $22,000 | $22,000 |
+| | Módulo amplificador ADC de 24 bits HX711 | 1 | $12,000 | $12,000 |
+| | Sensor NTC 10 kΩ (3950K) encapsulado | 1 | $3,500 | $3,500 |
+| **Etapa de Potencia y Pasivos** | Resistencia de alambre cerámico 10 Ω / 20 W | 1 | $8,500 | $8,500 |
+| | Transistor BJT 2N2222A (TO-92) | 2 | $800 | $1,600 |
+| | Transistor MOSFET IRFZ44N de canal N | 1 | $4,500 | $4,500 |
+| | Diodos de protección 1N4007 y kit de resistencias variadas | 1 kit | $5,000 | $5,000 |
+| **Fuente de Alimentación Discreta** | Transformador de alimentación (salida AC) | 1 | $25,000 | $25,000 |
+| | Puente rectificador de diodos | 1 | $3,000 | $3,000 |
+| | Regulador de voltaje lineal (Familia LM78XX) | 1 | $2,500 | $2,500 |
+| | Condensadores electrolíticos y cerámicos de filtrado | 4 | $1,000 | $4,000 |
+| **Conexión y Ensamble** | Protoboards de 830 puntos con bus de alimentación | 2 | $18,000 | $36,000 |
+| | Paquete de cables Jumper multifilar (M-M, M-H, H-H x 40 und) | 2 | $14,000 | $28,000 |
+| | Conectores tipo bornera de 2 pines | 4 | $1,200 | $4,800 |
+| **Estructura y Chasis Económico** | Acrílico moldeable / retazos para ventana de observación | 1 | $18,000 | $18,000 |
+| | Láminas de madera para base rígida de la galga | 1 | $12,000 | $12,000 |
+| | Cartón paja/corrugado, láminas de foami y silicona de pegado | 1 kit | $15,000 | $15,000 |
+| | Tornillería pequeña M3 para fijación de soporte | 1 kit | $3,000 | $3,000 |
+| **TOTAL COSTO DIRECTO (BOM)** | — | — | — | **$270,400** |
+
+---
+
+### B. Comparativa de Precios con Sistemas Similares y Comerciales
+
+Para poner en perspectiva el presupuesto final del prototipo ($270,400 COP), la Tabla V establece una comparación frente a las alternativas existentes en el mercado médico y en proyectos académicos de referencia.
+
+#### Tabla V: Cuadro Comparativo de Incubadoras y Prototipos del Mercado
+
+| Parámetro | Incubadora Comercial Gama Alta (ej. Dräger / YP2000) | Incubadora Clínica Estándar / Transporte (ej. YP920) | Prototipos de Investigación (Arduino / Raspberry Pi) | Protot
+
+---
+
+# IV. ANÁLISIS DE RESULTADOS
+
+El desarrollo práctico en el laboratorio permitió comprobar de manera directa cómo responden los componentes electrónicos elegidos frente a las condiciones reales de prueba, alejándose de los comportamientos teóricos o simulados. Al integrar el sistema sobre la tarjeta ESP32, el proceso de evaluación entregó resultados contrastantes entre lo que se pudo medir en físico y lo que quedó limitado desde la selección del hardware.
+
+En primera instancia, la prueba del sistema de pesaje mediante la celda de carga de 5 kg y el amplificador HX711 fue el único procedimiento que se ejecutó físicamente en la mesa de trabajo. Al colocar masas fijas sobre la plataforma para verificar la lectura en la pantalla LCD, el resultado obtenido fue una variación constante y errática en los datos mostrados. En lugar de registrar un valor estático, la cifra en pantalla oscilaba en cada iteración del programa. El análisis de esta respuesta muestra que las microvariaciones de voltaje que entrega la celda de carga se vieron severamente alteradas por la fragilidad de las conexiones en la protoboard y el uso de cables jumper. Estos elementos introdujeron variaciones en la resistencia de contacto y sirvieron como antenas para el ruido electromagnético de la red eléctrica, superando la capacidad del filtro por software y provocando la inestabilidad en la conversión digital.
+
+Por otro lado, la evaluación del sistema de calentamiento no llegó a la fase de prueba experimental dentro de la cabina de acrílico. Al revisar la capacidad de la resistencia de alambre de 10 Ω y 20 W frente a las dimensiones reales del recinto (90 cm x 40 cm x 45 cm), se determinó que la potencia resultaba excesivamente baja para el volumen de aire que se pretendía calentar. La tasa de transferencia térmica de un elemento de apenas 20 W es incapaz de vencer la inercia térmica del aire y las pérdidas de calor que ocurren de forma natural a través del acrílico hacia el ambiente. Al constatar que la energía disipada no produciría un incremento medible en la temperatura interna, el proceso no se llevó a la ejecución física, quedando el microclima invariable en la temperatura ambiental del laboratorio y dejando el algoritmo de control térmico sin posibilidad de actuar sobre el proceso.
+
+En conjunto, los resultados obtenidos en la práctica reflejan que la integración de un prototipo funcional depende directamente de la calidad de la instrumentación y del dimensionamiento físico de las etapas de potencia. Mientras que la etapa de lectura analógica se vio afectada por la falta de un cableado firme y blindado frente al ruido, la etapa térmica quedó condicionada por la restricción de potencia de la resistencia seleccionada, lo que impidió la validación completa del sistema en condiciones de operación real.
+
+---
+
+
 
 # REFERENCIAS
 
