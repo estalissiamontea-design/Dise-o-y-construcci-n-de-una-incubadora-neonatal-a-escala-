@@ -1,8 +1,12 @@
 # DISEÑO, CONSTRUCCIÓN Y EVALUACIÓN EXPERIMENTAL DE UN PROTOTIPO DE INCUBADORA NEONATAL A ESCALA CON CONTROL TÉRMICO PID Y SUBSISTEMA DE PESAJE DIGITAL
 
-**Autores:** Estudiantes de Ingeniería Biomédica  
-**Filiación:** Facultad de Ingeniería, Universidad Militar Nueva Granada, VII Semestre  
-**Asignatura:** Instrumentación Biomédica y Biosensores  
+Alissia Montealegre Quintero. 
+Raul Alexander Peñuela Jimenez.
+Silvia Lorena Vargas Rueda.
+
+Instrumentación Biomédica y Biosensores  
+Facultad de Ingeniería, Universidad Militar Nueva Granada, VII Semestre  
+
 
 ---
 
@@ -464,7 +468,7 @@ Para poner en perspectiva el presupuesto final del prototipo ($270,400 COP), la 
 
 | Parámetro | Incubadora Comercial Gama Alta (ej. Dräger / YP2000) | Incubadora Clínica Estándar / Transporte (ej. YP920) | Prototipos de Investigación (Arduino / Raspberry Pi) | Prototipo Desarrollado (ESP32) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Rango de Precio (COP)** | $50,000,000 - $120,000,000 COP | $18,000,000 - $28,000,000 COP | $600,000 - $1,200,000 COP | $270,400 COP |
+| **Rango de Precio (COP)** | $50,000,000 - $120,000,000 COP | $18,000,000 - $28,000,000 COP | $600,000 - $1,200,000 COP | 270,400 COP |
 | **Sistema de Alimentación** | Fuentes conmutadas médicas redundantes e inmunizadas | Fuente conmutada regulada de grado médico | Adaptador o fuente conmutada comercial | Fuente artesanal (Transformador + Puente + LM78XX) |
 | **Control Térmico** | Calefactor cerámico/blindado (200W - 400W) con flujo controlado | Resistencia de alta potencia (100W - 200W) | Calefactor PTC o bombillo halógeno (50W - 100W) | Resistencia de alambre cerámico (20W) |
 | **Monitoreo de Peso** | Balanza integrada de precisión clínica ($\pm 1\text{ g}$) | Balanza de alta resolución externa opcional | Celda de carga 1 kg - 5 kg con HX711 | Celda de carga 5 kg con HX711 en base de madera |
@@ -484,6 +488,50 @@ En conjunto, los resultados obtenidos en la práctica reflejan que la integraci�
 
 ---
 
+# VI. DISCUSIÓN DE PREGUNTAS
+
+---
+
+### 1. ¿Qué otras variables (y por qué) además de las aquí mencionadas son críticas en el monitoreo neonatal?
+
+Además de la temperatura corporal y el peso corporal, un microclima y entorno de soporte neonatal de grado clínico exige la regulación y supervisión continua de las siguientes variables biológicas y ambientales:
+
+* **Humedad Relativa del Aire (40% - 80%):** Es una variable ambiental crítica en neonatos prematuros extremo (menos de 32 semanas). Debido a la inmadurez de la capa córnea de la piel, los recién nacidos sufren pérdidas de agua transepidérmicas elevadas, lo que genera deshidratación rápida y pérdida de calor por evaporación. Mantener un nivel alto de humedad dentro de la cabina previene la hipotermia y las lesiones cutáneas.
+* **Concentración de Oxígeno ($FiO_2$):** La oxigenoterapia en la cabina debe controlarse con precisión entre el 21% y el 40%. Niveles deficientes de oxígeno provocan hipoxia y daño cerebral, mientras que niveles excesivos generan toxicidad por radicales libres, desencadenando retinopatía de la prematuridad (ROP) o displasia broncopulmonar.
+* **Frecuencia Cardíaca y Respiratoria (Pletismografía / ECG):** Permiten la detección inmediata de apneas de la prematuridad, bradicardias o paros cardiorrespiratorios. Dado que la regulación autonómica del recién nacido es inestable, estos parámetros son los primeros indicadores de distress respiratorio o sepsis.
+* **Saturación de Oxígeno en Sangre ($SpO_2$):** Medida mediante pulsioximetría no invasiva, valida la efectividad del intercambio gaseoso y la perfusión periférica sin generar trauma en la piel.
+* **Nivel de Ruido Ambiental (inferior a 45 dB en el interior):** El sistema auditivo y el desarrollo neurológico del neonato son altamente sensibles. Niveles elevados de ruido dentro de la cabina (causados por ventiladores, alarmas bruscas o fricción mecánica) generan estrés térmico, aumentan la frecuencia cardíaca y pueden alterar el desarrollo del SNC.
+
+---
+
+### 2. ¿Qué haría falta para convertir el sistema desarrollado en una incubadora neonatal real?
+
+Para escalar el prototipo actual hacia un equipo biomédico utilizable en entornos clínicos reales, es necesario rediseñar el hardware, la estructura y el control bajo las normativas de dispositivos médicos (como la IEC 60601-2-21):
+
+* **Rediseño de la Etapa de Potencia y Calentamiento:** Reemplazar la resistencia de 20 W por un elemento calefactor de tipo ciego o aletado de alta capacidad (150 W a 300 W) alimentado por un circuito conmutado sólido, sumado a un flujo de aire forzado controlado mediante ductos para garantizar una distribución uniforme del calor.
+* **Inmunidad Electromagnética y Diseño de PCB:** Reemplazar el montaje en protoboard y los cables jumper por una tarjeta de circuito impreso (PCB) multicapa con planos de masa independientes para la etapa de potencia y la de señal. Se requiere aislamiento galvánico (optoacopladores e aisladores digitales) entre la ESP32 y las etapas de lectura analógica para eliminar el ruido de la red eléctrica en el amplificador HX711.
+* **Sistemas de Seguridad Redundantes por Hardware:** Una incubadora médica no puede depender de un único microcontrolador. Se exige un circuito de corte térmico analógico independiente (termostato físico o bimetálico) que desconecte mecánicamente la alimentación del calefactor si la temperatura supera los 38 °C, previniendo hipertermia por fallas de firmware.
+* **Materiales de Grado Médico y Chasis Aislante:** Sustituir la estructura de cartón, foami y madera por un chasis de policarbonato o acrílico de doble pared termoformado con sellado hermético, resistente a procesos de desinfección química agresiva y capaz de mantener el aislamiento térmico.
+* **Batería de Respaldo y Alarmas Auditivas/Visuales:** Incorporación de un sistema de Alimentación Ininterrumpida (UPS) interno para mantener el control de temperatura y los monitores activos durante fallas en el suministro eléctrico hospitalario, junto con un protocolo de alarmas priorizadas según norma IEC 60601-1-8.
+
+---
+
+### 3. ¿Qué semejanzas hay entre una incubadora neonatal y una servo-cuna?
+
+Aunque la incubadora neonatal (recinto cerrado) y la servo-cuna o cuna radiante (sistema abierto) difieren en su geometría y mecanismo primario de transferencia de calor, comparten principios fundamentales de diseño biomédico:
+
+* **Principio de Servo-Control en Bucle Cerrado:** Ambos sistemas utilizan un algoritmo de control automático que ajusta la potencia del elemento calefactor en tiempo real, basándose en la retroalimentación continua de la temperatura medida por un sensor pegado a la piel del neonato (Modo Servocontrolado o Modo Piel).
+* **Objetivo de Ambiente Térmico Neutro (ATN):** Ambos equipos buscan mantener al recién nacido en un rango de temperatura donde el gasto metabólico y el consumo de oxígeno sean mínimos, previniendo tanto el estrés por frío como el estrés por calor.
+* **Monitoreo Integrado y Seguridad:** Comparten la integración de módulos de sensorización (temperatura, peso, constantes vitales) y el uso de sistemas de alarma redundantes frente a desviaciones de temperatura respecto a la consigna fijada por el personal médico.
+* **Uso en Cuidado Intensivo Neonatal (UCIN):** Ambas son plataformas diseñadas para dar soporte vital al neonato, permitiendo el acceso del personal de enfermería y pediatría para procedimientos médicos, toma de muestras o administración de tratamientos.
+
+---
+
+# VII. CONCLUSIONES
+
+El desarrollo de sistemas de soporte neonatal mediante plataformas de hardware de bajo costo responde a la necesidad de evaluar alternativas accesibles para el monitoreo de constantes biológicas en entornos de recursos limitados. A través de este proyecto se buscó integrar la arquitectura de control de la ESP32 con sensores térmicos, interfaz de usuario y una etapa de pesaje digital basada en la celda de carga de 5 kg y el amplificador HX711. La evaluación experimental demostró que la viabilidad del prototipo depende críticamente de la relación entre el dimensionamiento de potencia y la integridad de las señales analógicas. Por un lado, la etapa de calentamiento no logró alterar el microclima de la cámara debido a la insuficiencia térmica de la resistencia de 20 W frente al volumen del recinto, impidiendo la validación práctica del bucle de control. Por otro lado, la etapa de pesaje evidenció una dispersión constante en la lectura de masa, atribuible a la susceptibilidad del puente de Wheatstone ante falsos contactos en la protoboard y al ruido inducido por la red eléctrica en la fuente de alimentación discreta. Los hallazgos de este trabajo delimitan con claridad la frontera entre la lógica de control por software y los requerimientos físicos del hardware biomédico. La experiencia práctica demuestra que la programación del microcontrolador resulta ineficaz si no está respaldada por un acondicionamiento de señal acoplado, blindaje electromagnético adecuado y un cálculo riguroso de transferencia de calor en la etapa de potencia. El siguiente paso para la evolución de esta plataforma consiste en reemplazar el montaje en protoboard por un circuito impreso (PCB) diseñado a medida con planos de masa aislados, incorporar optoacopladores para la etapa de potencia y redimensionar el elemento calefactor con un sistema de ventilación forzada que garantice la circulación uniforme de temperatura dentro de la cabina.
+
+---
 
 
 # REFERENCIAS
